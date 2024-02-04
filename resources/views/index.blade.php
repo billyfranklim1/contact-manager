@@ -15,12 +15,13 @@
 
     <div class="flex justify-between mb-4">
         <div class="flex space-x-4 flex-wrap">
-            <input type="text" class="border-2 border-gray-300 p-2 h-10" placeholder="Nome">
-            <input type="text" class="border-2 border-gray-300 p-2 h-10" placeholder="Número">
-            <button class="bg-white-500 text-black py-2 px-4 h-10 rounded  border-2 border-gray-300 align-center">
-                <i class="fas fa-search"></i>
-                Buscar
-            </button>
+            <form class="flex space-x-4" id="search-form">
+                <input type="text" class="border-2 border-gray-300 p-2 h-10" placeholder="Digite para buscar ...">
+                <button class="bg-white-500 text-black py-2 px-4 h-10 rounded  border-2 border-gray-300 align-center" type="submit">
+                    <i class="fas fa-search"></i>
+                    Buscar
+                </button>
+            </form>
         </div>
             <button class="bg-black text-white py-2 px-4 rounded mb-4" id="create-contact">
                 <i class="fas fa-plus-circle"></i>
@@ -34,7 +35,7 @@
         <tr>
             <th class="py-2 px-4 font-medium text-left border-b-2">Nome</th>
             <th class="py-2 px-4 font-medium text-left border-b-2">Número</th>
-            <th class="py-2 px-4 font-medium text-left border-b-2">Data de Criação</th>
+            <th class="py-2 px-4 font-medium text-left border-b-2">E-mail</th>
             <th class="py-2 px-4 font-medium text-left border-b-2">Ações</th>
         </tr>
         </thead>
@@ -42,7 +43,7 @@
         <tr>
             <td class="py-2 px-4">Nome do Contato</td>
             <td class="py-2 px-4">Número do Contato</td>
-            <td class="py-2 px-4">Data de Criação</td>
+            <td class="py-2 px-4">E-mail do Contato</td>
             <td class="py-2 px-4">
                 <button class="bg-white text-white py-1 px-2 rounded border-2 border-gray-600">
                     <i class="fas fa-eye text-gray-600"></i>
@@ -56,6 +57,17 @@
             </td>
         </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="5" class="text-center">
+                    <nav class="flex justify-center pagination">
+                        <a href="#" class="text-black py-2 px-4 rounded border-2 border-gray-600 mx-1">1</a>
+                        <a href="#" class="text-black py-2 px-4 rounded border-2 border-gray-600 mx-1">2</a>
+                        <a href="#" class="text-black py-2 px-4 rounded border-2 border-gray-600 mx-1">3</a>
+                    </nav>
+                </td>
+            </tr>
+        </tfoot>
     </table>
 </div>
 
@@ -150,9 +162,9 @@
 
 <script>
     $(document).ready(function () {
-        function populateTable() {
+        function populateTable(pageUrl = '/api/contacts') {
             $.ajax({
-                url: '/api/contacts',
+                url: pageUrl,
                 method: 'GET',
                 dataType: 'json',
                 success: function (response) {
@@ -163,22 +175,27 @@
 
                         let formattedDate = new Date(contact.created_at).toLocaleDateString('pt-BR');
 
+
+                        // table responsive
                         var row = '<tr>' +
                             '<td class="py-2 px-4">' + contact.name + '</td>' +
                             '<td class="py-2 px-4">' + contact.contact + '</td>' +
-                            '<td class="py-2 px-4">' + formattedDate + '</td>' +
-                            '<td class="py-2 px-4 space-x-2">' +
-                                '<button data-id="' + contact.id + '" class="bg-white text-white py-1 px-2 rounded border-2 border-gray-600 view-contact">' +
-                                    '<i class="fas fa-eye text-gray-600"></i>' +
+                            '<td class="py-2 px-4">' + contact.email + '</td>' +
+                            '<td class="py-2 px-4 space-x-2 flex justify-center">' +
+                                '<button data-id="' + contact.id + '" class="bg-white text-white py-1 px-2 rounded border-2 border-black view-contact">' +
+                                    '<i class="fas fa-eye text-black"></i>' +
                                 '</button>' +
-                                '<button data-id="' + contact.id + '" class="bg-white text-white py-1 px-2 rounded border-2 border-gray-600 edit-contact">' +
-                                    '<i class="fas fa-edit text-gray-600"></i>' +
+                                '<button data-id="' + contact.id + '" class="bg-white text-white py-1 px-2 rounded border-2 border-black edit-contact">' +
+                                    '<i class="fas fa-edit text-black"></i>' +
                                 '</button>' +
-                                '<button data-id="' + contact.id + '" class="bg-white text-white py-1 px-2 rounded border-2 border-gray-600 confirm-delete-contact">' +
-                                    '<i class="fas fa-trash text-gray-600"></i>' +
+                                '<button data-id="' + contact.id + '" class="bg-white text-white py-1 px-2 rounded border-2 border-black confirm-delete-contact">' +
+                                    '<i class="fas fa-trash text-black"></i>' +
                                 '</button>' +
                             '</tr>';
                         $('#contacts-table tbody').append(row);
+
+
+                        updatePagination(response.meta);
                     });
 
                     if (response.data.length === 0) {
@@ -186,13 +203,42 @@
                             '<td colspan="4" class="text-center">Nenhum contato encontrado</td>' +
                             '</tr>';
                         $('#contacts-table tbody').append(row);
+
+                        $('.pagination').empty();
                     }
                 },
                 error: function () {
                     alert('Erro ao buscar os contatos da API');
                 }
             });
+
+            if (pageUrl === '/api/contacts') {
+                $('#search-form').find('input').val('');
+            }
         }
+
+        function updatePagination(meta) {
+            const paginationContainer = $('.pagination');
+            paginationContainer.empty();
+
+            let paginationHtml = '';
+
+            meta.links.forEach(link => {
+                if(link.url) {
+                    const isActive = link.active ? 'bg-black text-white' : 'bg-white text-black';
+                    paginationHtml += `<a href="#" class="${isActive} py-2 px-4 rounded border-2 border-black mx-1" data-url="${link.url}">${link.label}</a>`;
+                }
+            });
+
+            paginationContainer.html(paginationHtml);
+
+            paginationContainer.find('a').on('click', function(e) {
+                e.preventDefault();
+                const pageUrl = $(this).data('url');
+                populateTable(pageUrl);
+            });
+        }
+
 
         populateTable();
 
@@ -306,6 +352,15 @@
                     }
                 }
             });
+        });
+        $('#search-form').submit(function (e) {
+            e.preventDefault();
+            var search = $(this).find('input').val();
+            if (search === '') {
+                populateTable();
+                return;
+            }
+            populateTable('/api/contacts?search=' + search);
         });
 
 
