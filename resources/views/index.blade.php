@@ -9,8 +9,26 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta name="APP_URL" content="{{ env('APP_URL') }}">
 
+    <style>
+        .loader-overlay {
+            position: fixed; /* Posicionamento fixo na tela */
+            top: 0;
+            left: 0;
+            width: 100%; /* Cobrir toda a largura */
+            height: 100%; /* Cobrir toda a altura */
+            background: rgba(255, 255, 255, 0.7) /* Cor de fundo com transparência */
+            url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><radialGradient id="a7" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)"><stop offset="0" stop-color="%23000000"></stop><stop offset=".3" stop-color="%23000000" stop-opacity=".9"></stop><stop offset=".6" stop-color="%23000000" stop-opacity=".6"></stop><stop offset=".8" stop-color="%23000000" stop-opacity=".3"></stop><stop offset="1" stop-color="%23000000" stop-opacity="0"></stop></radialGradient><circle transform-origin="center" fill="none" stroke="url(%23a7)" stroke-width="15" stroke-linecap="round" stroke-dasharray="200 1000" stroke-dashoffset="0" cx="100" cy="100" r="70"><animateTransform type="rotate" attributeName="transform" calcMode="spline" dur="2" values="360;0" keyTimes="0;1" keySplines="0 0 1 1" repeatCount="indefinite"></animateTransform></circle><circle transform-origin="center" fill="none" opacity=".2" stroke="%23000000" stroke-width="15" stroke-linecap="round" cx="100" cy="100" r="70"></circle></svg>') center/10% no-repeat;
+            z-index: 9999; /* Garantir que esteja acima de outros conteúdos */
+            display: flex; /* Usar flexbox para alinhamento */
+            justify-content: center; /* Centralizar horizontalmente */
+            align-items: center; /* Centralizar verticalmente */
+        }
+
+    </style>
+
 </head>
 <body class="bg-white">
+<div class="loader-overlay" id="loader-overlay" style="display: none;"></div>
 <div class="container mx-auto p-6">
     <h1 class="text-xl font-bold mb-4">Lista de Contatos</h1>
 
@@ -166,6 +184,9 @@
         const host = window.location.origin;
 
         function populateTable(pageUrl = host + '/api/contacts') {
+
+            $('#loader-overlay').show();
+
             $.ajax({
                 url: pageUrl,
                 method: 'GET',
@@ -205,6 +226,8 @@
 
                         $('.pagination').empty();
                     }
+
+                    $('#loader-overlay').hide();
                 },
                 error: function () {
                     alert('Erro ao buscar os contatos da API');
@@ -246,6 +269,7 @@
 
         $('#create-contact-form').submit(function (e) {
             e.preventDefault();
+            $('#loader-overlay').show();
 
             var formData = {
                 name: $('#name_create').val(),
@@ -265,6 +289,7 @@
                 success: function (data) {
                     $('#create-modal').addClass('hidden');
                     $('#create-contact-form')[0].reset();
+                    $('#loader-overlay').hide();
                     populateTable();
                 },
                 error: function (error) {
@@ -285,6 +310,7 @@
                     } else {
                         alert('Erro ao criar o contato: ' + error.responseJSON.message);
                     }
+                    $('#loader-overlay').hide();
                 }
             });
         });
@@ -293,6 +319,8 @@
 
             let contactId = $('#id_delete').val();
 
+            $('#loader-overlay').show();
+
             $.ajax({
                 url: '/api/contacts/' + contactId,
                 method: 'DELETE',
@@ -300,9 +328,11 @@
                 success: function (response) {
                     $('#confirm-dialog').addClass('hidden');
                     populateTable();
+                    $('#loader-overlay').hide();
                 },
                 error: function () {
                     alert('Erro ao deletar o contato');
+                    $('#loader-overlay').hide();
                 }
             });
 
@@ -310,6 +340,9 @@
         });
         $('#edit-contact-form').submit(function (e) {
             e.preventDefault();
+
+            $('#loader-overlay').show();
+
             var formData = {
                 id: $('#id').val(),
                 name: $('#name').val(),
@@ -333,6 +366,8 @@
                     $('#email').removeClass('border-red-500');
 
                     populateTable();
+
+                    $('#loader-overlay').hide();
                 },
                 error: function (error) {
                     if (error.responseJSON) {
@@ -352,6 +387,7 @@
                     } else {
                         alert('Erro ao criar o contato: ' + error.responseJSON.message);
                     }
+                    $('#loader-overlay').hide();
                 }
             });
         });
@@ -368,6 +404,7 @@
 
         $(document).on('click', '.view-contact', function () {
             let contactId = $(this).data('id');
+            $('#loader-overlay').show();
 
             $.ajax({
                 url: '/api/contacts/' + contactId,
@@ -384,14 +421,18 @@
                     $('#save-contact').addClass('hidden');
 
                     $('#modal-title').text('Detalhes do Contato');
+
+                    $('#loader-overlay').hide();
                 },
                 error: function () {
                     alert('Erro ao buscar os detalhes do contato');
+                    $('#loader-overlay').hide();
                 }
             });
         });
         $(document).on('click', '.edit-contact', function () {
             var contactId = $(this).data('id');
+            $('#loader-overlay').show();
 
             $.ajax({
                 url: '/api/contacts/' + contactId,
@@ -409,10 +450,12 @@
                     $('#save-contact').removeClass('hidden');
 
                     $('#modal-title').text('Editar Contato');
+                    $('#loader-overlay').hide();
                 },
 
                 error: function () {
                     alert('Erro ao buscar os detalhes do contato');
+                    $('#loader-overlay').hide();
                 }
             });
 
