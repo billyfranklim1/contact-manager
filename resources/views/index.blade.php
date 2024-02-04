@@ -7,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta name="APP_URL" content="{{ env('APP_URL') }}">
 
 </head>
 <body class="bg-white">
@@ -162,7 +163,9 @@
 
 <script>
     $(document).ready(function () {
-        function populateTable(pageUrl = '/api/contacts') {
+        const host = window.location.origin;
+
+        function populateTable(pageUrl = host + '/api/contacts') {
             $.ajax({
                 url: pageUrl,
                 method: 'GET',
@@ -173,10 +176,6 @@
 
                     $.each(response.data, function (index, contact) {
 
-                        let formattedDate = new Date(contact.created_at).toLocaleDateString('pt-BR');
-
-
-                        // table responsive
                         var row = '<tr>' +
                             '<td class="py-2 px-4">' + contact.name + '</td>' +
                             '<td class="py-2 px-4">' + contact.contact + '</td>' +
@@ -225,8 +224,11 @@
 
             meta.links.forEach(link => {
                 if(link.url) {
+                    const APP_URL = $('meta[name="APP_URL"]').attr('content');
+                    const HOST = window.location.origin;
+                    const newUrl = link.url.replace(APP_URL, HOST);
                     const isActive = link.active ? 'bg-black text-white' : 'bg-white text-black';
-                    paginationHtml += `<a href="#" class="${isActive} py-2 px-4 rounded border-2 border-black mx-1" data-url="${link.url}">${link.label}</a>`;
+                    paginationHtml += `<a href="#" class="${isActive} py-2 px-4 rounded border-2 border-black mx-1" data-url="${newUrl}">${link.label}</a>`;
                 }
             });
 
