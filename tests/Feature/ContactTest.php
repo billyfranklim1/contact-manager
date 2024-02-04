@@ -67,6 +67,23 @@ class ContactTest extends TestCase
         $response->assertJson(['message' => 'Contact deleted successfully']);
     }
 
+    public function test_list_contacts_with_pagination()
+    {
+        Contact::factory()->count(20)->create();
+
+        $response = $this->get('/api/contacts');
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(10, 'data');
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => ['id', 'name', 'contact', 'email'],
+            ],
+            'links' => ['first', 'last', 'prev', 'next'],
+            'meta' => ['current_page', 'last_page', 'from', 'to', 'path', 'per_page', 'total'],
+        ]);
+    }
+
     public function test_create_contact_with_missing_data()
     {
         $response = $this->post('/api/contacts', []);
