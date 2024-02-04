@@ -1,94 +1,97 @@
 # Contact Manager 📇
 
 ![Contact Manager](public/capture.png)
-## Sobre o Projeto
+## About the Project
 
-O **Contact Manager** é uma aplicação web desenvolvida em Laravel, projetada para gerenciar contatos de forma eficiente e intuitiva. Com funcionalidades CRUD (Create, Read, Update, Delete), este projeto oferece uma interface amigável para adicionar, visualizar, editar e deletar contatos.
+The **Contact Manager** is a Laravel-based web application designed for efficient and intuitive contact management. With CRUD (Create, Read, Update, Delete) functionalities, this project offers a user-friendly interface to add, view, edit, and delete contacts.
 
-### Funcionalidades
+### Features
 
-- **Listagem de Contatos**: Veja todos os contatos cadastrados com facilidade. 📋
-- **Adição de Novos Contatos**: Cadastre novos contatos com detalhes como nome, contato e e-mail. ➕
-- **Visualização de Contatos**: Acesse os detalhes de cada contato. 👀
-- **Edição de Contatos**: Atualize informações de contatos existentes. ✏️
-- **Deleção de Contatos**: Remova contatos de forma segura com a deleção suave. 🗑️
+- **Contact Listing**: Easily view all registered contacts. 📋
+- **Adding New Contacts**: Register new contacts with details like name, contact, and email. ➕
+- **Viewing Contacts**: Access each contact's details. 👀
+- **Editing Contacts**: Update existing contact information. ✏️
+- **Deleting Contacts**: Safely remove contacts with soft deletion. 🗑️
 
-### Considerações Técnicas
+### Technical Considerations
 
-- **Validação**: Nome (>5 caracteres), Contato (9 dígitos) e E-mail (formato válido) com unicidade.
-- **Autenticação**: Algumas funcionalidades são restritas a usuários autenticados.
-- **Testes**: Cobertura de testes para validação de formulários.
-- **Arquitetura**: Implementação de camadas de Services e Repository para uma arquitetura limpa e manutenível.
+- **Validation**: Name (>5 characters), Contact (9 digits), and Email (valid format) with uniqueness.
+- **Authentication**: Some functionalities are restricted to authenticated users.
+- **Tests**: Test coverage for form validation.
+- **Architecture**: Implementation of Services and Repository layers for clean and maintainable architecture.
 
-## Começando
+## Getting Started
 
-Para configurar e executar o projeto localmente, siga estes passos:
+To set up and run the project locally, follow these steps:
 
-### Pré-requisitos
+### Prerequisites
 
 - PHP 8.1
 - Composer
 - Laravel 10
 
-### Instalação
+### Installation
 
-1. Clone o repositório:
+1. Clone the repository:
    ```sh
    git clone https://github.com/billyfranklim1/contact-manager.git
    ```
-2. Instale as dependências do PHP:
+2. Install PHP dependencies:
    ```sh
    composer install
    ```
-3. Configure o ambiente copiando o `.env.example` para `.env` e ajustando as variáveis de ambiente conforme necessário.
-4. Gere uma chave para a aplicação:
+3. Set up the environment by copying `.env.example` to `.env` and adjusting the environment variables as needed.
+4. Generate a key for the application:
    ```sh
    php artisan key:generate
    ```
-5. Execute as migrações para criar a estrutura do banco de dados:
+5. Run migrations to create the database structure:
    ```sh
    php artisan migrate
    ```
-6. (Opcional) Popule o banco de dados com dados de teste:
+6. (Optional) Populate the database with test data:
    ```sh
    php artisan db:seed
    ```
 
-## Uso
+## Usage
 
-Após a configuração, você pode iniciar o servidor de desenvolvimento do Laravel:
+After setup, you can start the Laravel development server:
 
 ```sh
 php artisan serve
 ```
 
-Acesse a aplicação em `http://localhost:8000`.
+Access the application at `http://localhost:8000`.
 
-## Testes
+## Tests
 
-Execute os testes para garantir que tudo esteja funcionando como esperado:
+Run the tests to ensure everything is working as expected:
 
 ```sh
 php artisan test
 ```
 
-## Contribuições
+## Contributions
 
-Contribuições são o que fazem a comunidade open source um lugar incrível para aprender, inspirar e criar. Qualquer contribuição que você fizer será **muito apreciada**.
+Contributions are what make the open-source community an amazing place to learn, inspire, and create. Any contributions you make will be **greatly appreciated**.
 
-1. Faça o Fork do projeto
-2. Crie sua Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a Branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
+## This project supports multiple languages:
+- [English](README.md)
+- [Português](README.pt.md)
 
-## Contato
+## Contact
 
-Meu Portfólio: [billy.dev.dev](https://billy.dev.dev)
+My Portfolio: [billy.dev.dev](https://billy.dev.dev)
 
-Meu LinkedIn: [Billy Franklim](https://www.linkedin.com/in/billyfranklim/)
+My LinkedIn: [Billy Franklim](https://www.linkedin.com/in/billyfranklim/)
 
-E-mail: [billyfranklim@gmail.com](mailto:billyfranklim@gmail.com)
+Email: [billyfranklim@gmail.com](mailto:billyfranklim@gmail.com)
 
-Link do Projeto: [https://github.com/billyfranklim1/contact-manager](https://github.com/billyfranklim1/contact-manager)
+Project Link: [https://github.com/billyfranklim1/contact-manager](https://github.com/billyfranklim1/contact-manager)
