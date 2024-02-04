@@ -251,7 +251,7 @@
                     const HOST = window.location.origin;
                     const newUrl = link.url.replace(APP_URL, HOST);
                     const isActive = link.active ? 'bg-black text-white' : 'bg-white text-black';
-                    paginationHtml += `<a href="#" class="${isActive} py-2 px-4 rounded border-2 border-black mx-1" data-url="${newUrl}">${link.label}</a>`;
+                    paginationHtml += `<a href="#" class="${isActive} py-1 px-2 rounded border-2 border-black mx-1" data-url="${newUrl}">${link.label}</a>`;
                 }
             });
 
