@@ -181,7 +181,7 @@
                             '<td class="py-2 px-4">' + contact.name + '</td>' +
                             '<td class="py-2 px-4">' + contact.contact + '</td>' +
                             '<td class="py-2 px-4">' + contact.email + '</td>' +
-                            '<td class="py-2 px-4 space-x-2 flex justify-center">' +
+                            '<td class="py-2 px-4 space-x-2 flex justify-start">' +
                                 '<button data-id="' + contact.id + '" class="bg-white text-white py-1 px-2 rounded border-2 border-black view-contact">' +
                                     '<i class="fas fa-eye text-black"></i>' +
                                 '</button>' +

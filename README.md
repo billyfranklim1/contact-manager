@@ -1,5 +1,6 @@
 # Contact Manager 📇
 
+![Contact Manager](public/capture.png)
 ## Sobre o Projeto
 
 O **Contact Manager** é uma aplicação web desenvolvida em Laravel, projetada para gerenciar contatos de forma eficiente e intuitiva. Com funcionalidades CRUD (Create, Read, Update, Delete), este projeto oferece uma interface amigável para adicionar, visualizar, editar e deletar contatos.
