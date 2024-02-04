@@ -4,7 +4,7 @@ namespace App\Services;
 
 interface ContactServiceInterface
 {
-    public function getAllContacts();
+    public function getAllContacts(array $data);
     public function getContactById($id);
     public function createContact(array $data);
     public function updateContact($id, array $data);

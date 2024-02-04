@@ -13,9 +13,9 @@ class ContactService implements ContactServiceInterface
         $this->contactRepository = $contactRepository;
     }
 
-    public function getAllContacts()
+    public function getAllContacts(array $data)
     {
-        return $this->contactRepository->all();
+        return $this->contactRepository->all($data);
     }
 
     public function getContactById($id)

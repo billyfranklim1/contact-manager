@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateContactRequest;
 use App\Http\Resources\ContactCollection;
 use App\Http\Resources\ContactResource;
 use App\Services\ContactServiceInterface;
+use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
@@ -16,9 +17,9 @@ class ContactController extends Controller
         $this->contactService = $contactService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = $this->contactService->getAllContacts();
+        $contacts = $this->contactService->getAllContacts($request->all());
         return new ContactCollection($contacts);
     }
 

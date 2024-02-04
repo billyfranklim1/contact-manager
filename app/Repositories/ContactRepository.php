@@ -5,9 +5,15 @@ use App\Models\Contact;
 
 class ContactRepository implements ContactRepositoryInterface
 {
-    public function all()
+    public function all(array $data)
     {
-        return Contact::all();
+        $query = Contact::query();
+        if (isset($data['search'])) {
+            $query->where('name', 'like', '%' . $data['search'] . '%')
+                ->orWhere('contact', 'like', '%' . $data['search'] . '%')
+                ->orWhere('email', 'like', '%' . $data['search'] . '%');
+        }
+        return $query->orderBy('id', 'desc')->paginate(10);
     }
 
     public function findById($id)
